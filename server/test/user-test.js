@@ -53,4 +53,19 @@ describe('Test for user', function() {
       });
     });
   });
+
+  it('should return 1 user', function(done) {
+    models.User.create(newUser)
+    .then((createUserResult) => {
+      chai.request(app)
+      .get(`${USERS_URL}/${createUserResult.dataValues.id}`)
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.email.should.equal(newUser.email);
+        done();
+      });
+    });
+  });
 });

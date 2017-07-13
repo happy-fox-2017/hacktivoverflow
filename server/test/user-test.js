@@ -20,10 +20,10 @@ describe('Test for user', function() {
   beforeEach(function(done) {
     const query = { where: {} };
     models.User.destroy(query)
-    .then((err) => {
-      if (err) return done(err);
+    .then((destroyResult) => {
       done();
-    });
+    })
+    .catch(err => done(err));
   });
 
   it('should create user without err', function(done) {
@@ -35,6 +35,22 @@ describe('Test for user', function() {
       should.not.exist(err);
       res.should.have.status(200);
       done();
+    });
+  });
+
+  it('should return 1 user in array', function(done) {
+    models.User.create(newUser)
+    .then((createUserResult) => {
+      chai.request(app)
+      .get(USERS_URL)
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('array');
+        res.body.should.have.lengthOf(1);
+        done();
+      });
     });
   });
 });

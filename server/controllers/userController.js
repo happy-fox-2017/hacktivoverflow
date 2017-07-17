@@ -60,9 +60,9 @@ function create(req, res) {
         username: req.body.username,
         name: req.body.name,
         password: hash
-      }, function(err, rezponse) {
-        if (err) {
-          console.log(err);
+      }, function(erro, rezponse) {
+        if (erro) {
+          console.log(erro);
           res.send("error")
         } else {
           res.send(rezponse)

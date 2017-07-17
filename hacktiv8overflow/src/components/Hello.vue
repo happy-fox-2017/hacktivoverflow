@@ -1,22 +1,35 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+  <div id="start-page-container" class="columns">
+    <div class="column is-one-third">
+      <h1 class="title is-3">Create New User</h1>
+      <h3 class="title is-5">and join our lost community</h3>
+      <h3 class="title is-5">{{ msg }}</h3>
+    </div>
+    <div class="column is-one-third">
+      <div class="field">
+        <label class="label">Name</label>
+        <p class="control">
+          <input class="input" type="text" placeholder="Full Name" v-model="signup.name">
+        </p>
+      </div>
+      <div class="field">
+        <label class="label">Username</label>
+        <p class="control">
+          <input class="input" type="text" placeholder="Username" v-model="signup.username">
+        </p>
+      </div>
+      <div class="field">
+        <label class="label">Password</label>
+        <p class="control">
+          <input class="input" type="password" placeholder="Password" v-model="signup.password" @keyup.enter="signUpGoGo">
+        </p>
+      </div>
+      <div class="field" style="margin-top: 30px;">
+        <span>
+          <button class="button is-warning" @click="signUpGoGo()" style=" width: 50%">Sign Up</button>
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -25,7 +38,37 @@ export default {
   name: 'hello',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      signup: {
+        name: "",
+        username: "",
+        password: ""
+      },
+      msg: ""
+    }
+  },
+  methods: {
+    signUpGoGo () {
+      let self = this
+      if (this.signup.name == "" || this.signup.username == "" || this.signup.password == "") {
+        alert("Please fill all the data before signing up")
+      } else {
+        axios.post('http://localhost:3000/api/users', {
+          name: self.signup.name,
+          username: self.signup.username,
+          password: self.signup.password,
+        })
+        .then(function(response) {
+          if (response.data == "failUsername") {
+            self.msg = "Username already taken!"
+            self.signup.username = ""
+          } else {
+            self.msg = "User created, please login to enjoy our lost community"
+            self.signup.name = ""
+            self.signup.username = ""
+            self.signup.password = ""
+          }
+        })
+      }
     }
   }
 }
@@ -33,21 +76,30 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+.label {
+  text-align: left;
+  color: white;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+.column {
+  margin-left: 11%;
 }
 
-li {
-  display: inline-block;
-  margin: 0 10px;
+h1 {
+  color: white
 }
 
-a {
-  color: #42b983;
+h3 {
+  color: white
+}
+
+.button.is-warning {
+  background-color: #d10808;
+  color: white;
+}
+
+#start-page-container {
+  margin-top: 0px;
+  padding:20px 0;
 }
 </style>

@@ -3,7 +3,7 @@
     <nav class="navbar">
       <div class="navbar-brand">
         <a class="navbar-item" href="#">
-          <img src="../assets/logo.png" alt="logo" width="112" height="28">
+          <img src="../assets/logo.png" alt="logo">
         </a>
 
         <div class="navbar-burger burger" data-target="navMenuExample">
@@ -23,7 +23,7 @@
           </div>
           <div class="navbar-item">
             <p class="control">
-              <a class="button is-warning" @click="loginGoGo">
+              <a class="button" @click="loginGoGo">
                 <span class="icon">
                   <i class="fa fa-user"></i>
                 </span>
@@ -54,7 +54,7 @@
 <script>
 export default {
   name: 'navbarku',
-  props: ["isLogin"],
+  props: ["isLogin", "curr"],
   data () {
     return {
       login: {
@@ -63,12 +63,41 @@ export default {
       }
     }
   },
+  computed: {
+    currUser () {
+      return this.curr.name
+    }
+  },
   methods: {
     loginGoGo () {
-      alert("login!")
+      let self= this
+      axios.post('http://localhost:3000/auth/users/login', {
+        username: self.login.username,
+        password: self.login.password
+      })
+      .then(function(response) {
+        if (response.data == "failUsername") {
+          self.login.username = ""
+          self.login.password = ""
+          alert("username did'nt exist")
+        } else if (response.data == "failPassword") {
+          alert("Wrong password")
+          self.login.password = ""
+        } else {
+          localStorage.setItem("token", response.data.token)
+          self.curr.name = response.data.name
+          self.login.username = ""
+          self.login.password = ""
+          self.$emit("login-go-go")
+        }
+      })
+      .catch(function(err) {
+        alert(err)
+      })
     },
     logoutGoGo () {
-      alert("this")
+      localStorage.clear()
+      this.$emit("logout-go-go")
     }
   }
 }
@@ -77,11 +106,26 @@ export default {
 <style scoped>
   header {
     width: 100%;
-    border-bottom: solid 1px #c6c6c6;
+    background: #d10808;
+    /*border-bottom: solid 1px #c6c6c6;*/
+  }
+
+  p {
+    color: white;
   }
 
   nav {
     max-width: 1060px;
+    background: #d10808;
     margin: 0 auto;
+  }
+
+  .button {
+    color: #7c7c7c;
+  }
+
+  .button.is-warning {
+    background-color: #7c7c7c;
+    color: white;
   }
 </style>

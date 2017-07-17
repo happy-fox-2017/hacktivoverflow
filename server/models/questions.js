@@ -9,7 +9,7 @@ var questionSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  userId: {
+  username: {
     type: String,
     required: true
   },

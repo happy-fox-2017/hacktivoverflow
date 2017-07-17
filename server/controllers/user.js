@@ -67,6 +67,7 @@ exports.signIn = function signIn(req, res) {
           res.send({
             email: user.email,
             name: user.name,
+            userId: user.id,
             token,
           });
         } else {

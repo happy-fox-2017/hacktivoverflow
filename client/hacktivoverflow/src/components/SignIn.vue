@@ -1,5 +1,5 @@
 <template>
-  <div class="row article-list">
+  <div class="row article-list" style="margin-top: 60px;">
     <div class="col-md-4 col-md-offset-4">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -43,7 +43,10 @@ export default {
         password: this.password,
       })
       .then((result) => {
-        console.log(result);
+        const token = result.data.token;
+        console.log(token);
+        sessionStorage.setItem('token', token);
+        this.$router.push({ path: '/main/questions' });
       })
       .catch((err) => {
         console.log(err);

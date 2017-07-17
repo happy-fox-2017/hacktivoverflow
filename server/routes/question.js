@@ -3,6 +3,7 @@ const questionController = require('../controllers/question');
 
 const router = express.Router();
 
+router.get('/', questionController.findAll);
 router.post('/', questionController.create);
 router.post('/:questionId/answer', questionController.giveAnswer);
 

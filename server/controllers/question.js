@@ -1,6 +1,16 @@
 
 const models = require('../models');
 
+exports.findAll = function findAllQuestions(req, res) {
+  models.Question.findAll({ where: {} })
+  .then((result) => {
+    res.json(result);
+  })
+  .catch((err) => {
+    res.status(500).send(err.message);
+  });
+};
+
 exports.create = function createUser(req, res) {
   const questionData = req.body;
   models.User.findOne({

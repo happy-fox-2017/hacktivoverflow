@@ -3,6 +3,8 @@ import Router from 'vue-router';
 // import Hello from '@/components/Hello';
 import SignIn from '@/components/SignIn';
 import SignUp from '@/components/SignUp';
+import Main from '@/components/Main';
+import MainQuestion from '@/components/MainQuestion';
 
 Vue.use(Router);
 
@@ -17,6 +19,18 @@ export default new Router({
       path: '/signup',
       name: 'SignUp',
       component: SignUp,
+    },
+    {
+      path: '/main',
+      name: 'Main',
+      component: Main,
+      children: [
+        {
+          path: '/main/questions',
+          name: 'MainQuestion',
+          component: MainQuestion,
+        },
+      ],
     },
   ],
 });

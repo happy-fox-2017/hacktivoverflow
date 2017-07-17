@@ -43,6 +43,7 @@ export default {
       this.$http.post(`${window.serverUrl}/api/users/signup`, {
         email: this.email,
         password: this.password,
+        name: this.name,
       })
       .then(() => {
         this.$router.push({ path: '/' });

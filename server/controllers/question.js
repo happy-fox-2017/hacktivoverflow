@@ -2,7 +2,18 @@
 const models = require('../models');
 
 exports.findAll = function findAllQuestions(req, res) {
-  models.Question.findAll({ where: {} })
+  models.Question.findAll(
+    {
+      where: {},
+      include: [
+        {
+          model: models.Answer,
+        },
+        {
+          model: models.User,
+        },
+      ],
+    })
   .then((result) => {
     res.json(result);
   })
@@ -19,6 +30,9 @@ exports.findOne = function findOneUser(req, res) {
       include: [
         {
           model: models.Answer,
+        },
+        {
+          model: models.User,
         },
       ],
     })

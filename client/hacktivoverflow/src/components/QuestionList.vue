@@ -6,6 +6,16 @@
         <p>
           {{ question.content }}
         </p>
+        <p>
+          Asked by : {{ question.User ? question.User.name : '' }}
+        </p>
+
+        <button class="btn btn-info" type="button">
+          Votes <span class="badge">4</span>
+        </button>
+        <button class="btn btn-primary" type="button">
+          Answer <span class="badge">4</span>
+        </button>
       </div>
     </div>
   </div>

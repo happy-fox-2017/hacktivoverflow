@@ -10,7 +10,7 @@
           <h5><hr/></h5>
 
           <ul class="list-group">
-            <li v-for="answer in question.Answers">
+            <li class="list-group-item" v-for="answer in question.Answers">
               <h4>{{ answer.content }}</h4>
             </li>
           </ul>

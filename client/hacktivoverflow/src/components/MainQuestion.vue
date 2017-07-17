@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-md-9" style="padding-left: 50px;">
+    <div class="col-md-8 col-md-offset-2" style="">
       <question-list></question-list>
     </div>
   </div>

@@ -18,7 +18,7 @@ export default {
       this.$router.push('/home')
     },
     goToMyQuestion () {
-      this.$rotuer.push('/my-question')
+      this.$router.push('/your-questions')
     }
   }
 }

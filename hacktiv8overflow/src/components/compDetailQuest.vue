@@ -176,7 +176,7 @@ export default {
       }
     },
     editGoGo(id) {
-      alert(`Edit question dengan id: ${id}`)
+      this.$router.push('/questions/'+id+'/edit')
     }
   },
   mounted() {

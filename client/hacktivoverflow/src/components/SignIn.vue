@@ -44,8 +44,10 @@ export default {
       })
       .then((result) => {
         const token = result.data.token;
+        const userId = result.data.userId;
         console.log(token);
         sessionStorage.setItem('token', token);
+        sessionStorage.setItem('userId', userId);
         this.$router.push({ path: '/main/questions' });
       })
       .catch((err) => {

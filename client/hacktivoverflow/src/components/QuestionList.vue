@@ -2,7 +2,7 @@
   <div class="row question-list">
     <div class="panel panel-default" v-for="question in questions">
       <div class="panel-body">
-        <a style="font-weight: bold;" @click="showDetails">{{ question.title }}</a>
+        <a style="font-weight: bold;" @click="showDetails(question.id)">{{ question.title }}</a>
         <p>
           {{ question.content }}
         </p>
@@ -22,8 +22,9 @@ export default {
     };
   },
   methods: {
-    showDetails() {
+    showDetails(questionId) {
       console.log('details..');
+      this.$router.push({ path: `/main/questiondetails/${questionId}` });
     },
     getQuestions() {
       this.$http.get(`${window.serverUrl}/api/questions`)

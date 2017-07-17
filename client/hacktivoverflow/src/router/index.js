@@ -5,6 +5,8 @@ import SignIn from '@/components/SignIn';
 import SignUp from '@/components/SignUp';
 import Main from '@/components/Main';
 import MainQuestion from '@/components/MainQuestion';
+import NewQuestion from '@/components/NewQuestion';
+import QuestionDetails from '@/components/QuestionDetails';
 
 Vue.use(Router);
 
@@ -29,6 +31,16 @@ export default new Router({
           path: '/main/questions',
           name: 'MainQuestion',
           component: MainQuestion,
+        },
+        {
+          path: '/main/newquestion',
+          name: 'NewQuestion',
+          component: NewQuestion,
+        },
+        {
+          path: '/main/questiondetails/:questionId',
+          name: 'QuestionDetails',
+          component: QuestionDetails,
         },
       ],
     },

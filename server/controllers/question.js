@@ -11,7 +11,26 @@ exports.findAll = function findAllQuestions(req, res) {
   });
 };
 
-exports.create = function createUser(req, res) {
+exports.findOne = function findOneUser(req, res) {
+  const questionId = req.params.questionId;
+  models.Question.find(
+    {
+      where: { id: questionId },
+      include: [
+        {
+          model: models.Answer,
+        },
+      ],
+    })
+  .then((result) => {
+    res.json(result);
+  })
+  .catch((err) => {
+    res.status(500).send(err.message);
+  });
+};
+
+exports.create = function createQuestion(req, res) {
   const questionData = req.body;
   models.User.findOne({
     where: {

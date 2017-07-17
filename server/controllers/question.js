@@ -21,3 +21,33 @@ exports.create = function createUser(req, res) {
     });
   });
 };
+
+exports.giveAnswer = function createUser(req, res) {
+  const answerData = req.body;
+  models.User.findOne({
+    where: {
+      id: answerData.user,
+    },
+  })
+  .then((foundUser) => {
+    models.Question.findOne({
+      where: {
+        id: answerData.question,
+      },
+    })
+    .then((foundQuestion) => {
+      models.Answer.create({
+        content: answerData.content,
+      })
+      .then((createdAnswer) => {
+        createdAnswer.setUser(foundUser)
+        .then(() => {
+          foundQuestion.addAnswer(createdAnswer)
+          .then((result) => {
+            res.json(result);
+          });
+        });
+      });
+    });
+  });
+};

@@ -38,7 +38,7 @@ describe('Test for question', function() {
 
     models.User.create(newUser)
     .then((createdUser) => {
-      newQuestion.user = createdUser._id;
+      newQuestion.user = createdUser.id;
 
       chai.request(app)
       .post(QUESTIONS_URL)

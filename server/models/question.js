@@ -10,5 +10,9 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   });
+
+  Question.associate = function (models) {
+    Question.belongsTo(models.User);
+  };
   return Question;
 };

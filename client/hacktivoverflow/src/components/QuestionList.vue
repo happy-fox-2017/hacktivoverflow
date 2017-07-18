@@ -29,27 +29,14 @@ export default {
   name: 'QuestionList',
   data() {
     return {
-      // questions: [{
-      //   title: 'Hello',
-      // }],
     };
   },
   methods: {
     showDetails(questionId) {
       this.$router.push({ path: `/main/questiondetails/${questionId}` });
     },
-    // getQuestions() {
-    //   this.$http.get(`${window.serverUrl}/api/questions`)
-    //   .then((response) => {
-    //     this.questions = response.data;
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    // },
   },
   mounted() {
-    // this.getQuestions();
     this.$store.dispatch('getQuestions');
   },
   computed: mapState(['questions']),

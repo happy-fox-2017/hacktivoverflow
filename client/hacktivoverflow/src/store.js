@@ -7,10 +7,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     questions: [],
+    question: {},
   },
   mutations: {
     loadQuestions(state, payload) {
       state.questions = payload;
+    },
+    loadQuestion(state, payload) {
+      state.question = payload;
     },
   },
   actions: {
@@ -21,6 +25,37 @@ export default new Vuex.Store({
       })
       .catch((error) => {
         console.log(error);
+      });
+    },
+    getQuestion({ commit }, payload) {
+      axios.get(`${window.serverUrl}/api/questions/${payload.questionId}`)
+      .then((response) => {
+        commit('loadQuestion', response.data);
+      })
+      .catch((error) => {
+        throw error;
+        // console.log(error);
+      });
+    },
+    createQuestion({ dispatch, commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axios.post(`${window.serverUrl}/api/questions`, payload)
+        .then(() => {
+          resolve();
+        })
+        .catch((err) => {
+          reject(err);
+        });
+      });
+    },
+    addAnswer({ dispatch, commit }, payload) {
+      axios.post(`${window.serverUrl}/api/questions/${this.question.id}/answer`, payload)
+      .then(() => {
+        dispatch('getQuestions');
+        this.$router.push({ path: '/main/questions' });
+      })
+      .catch((err) => {
+        console.log(err);
       });
     },
   },

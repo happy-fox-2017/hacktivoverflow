@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-md-9" style="padding-left: 50px;">
+    <div class="col-md-8 col-md-offset-2">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">New Question!</h3>
@@ -37,16 +37,13 @@ export default {
   },
   methods: {
     create() {
-      this.$http.post(`${window.serverUrl}/api/questions`, {
+      this.$store.dispatch('createQuestion', {
         title: this.title,
         content: this.content,
         user: sessionStorage.getItem('userId'),
       })
       .then(() => {
         this.$router.push({ path: '/main/questions' });
-      })
-      .catch((err) => {
-        console.log(err);
       });
     },
   },

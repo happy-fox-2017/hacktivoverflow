@@ -48,42 +48,32 @@
 
 <script>
 
+import { mapState } from 'vuex';
+
 export default {
   name: 'QuestionDetails',
   data() {
     return {
-      question: {},
       content: '',
     };
   },
   methods: {
     postAnswer() {
-      this.$http.post(`${window.serverUrl}/api/questions/${this.question.id}/answer`, {
+      this.$store.dispatch('addAnswer', {
         question: this.question.id,
         content: this.content,
         user: sessionStorage.getItem('userId'),
-      })
-      .then(() => {
-        this.$router.push({ path: '/main/questions' });
-      })
-      .catch((err) => {
-        console.log(err);
       });
+      this.$router.push({ path: '/main/questions' });
     },
   },
   components: {
   },
   mounted() {
     const questionId = this.$route.params.questionId;
-    this.$http.get(`${window.serverUrl}/api/questions/${questionId}`)
-    .then((response) => {
-      this.question = response.data;
-    })
-    .catch((error) => {
-      throw error;
-      // console.log(error);
-    });
+    this.$store.dispatch('getQuestion', { questionId });
   },
+  computed: mapState(['question']),
 };
 </script>
 

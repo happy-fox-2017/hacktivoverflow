@@ -14,6 +14,28 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Main',
+      component: Main,
+      children: [
+        {
+          path: '',
+          name: 'MainQuestion',
+          component: MainQuestion,
+        },
+        {
+          path: '/newquestion',
+          name: 'NewQuestion',
+          component: NewQuestion,
+        },
+        {
+          path: '/questiondetails/:questionId',
+          name: 'QuestionDetails',
+          component: QuestionDetails,
+        },
+      ],
+    },
+    {
+      path: '/signin',
       name: 'SignIn',
       component: SignIn,
     },
@@ -21,28 +43,6 @@ export default new Router({
       path: '/signup',
       name: 'SignUp',
       component: SignUp,
-    },
-    {
-      path: '/main',
-      name: 'Main',
-      component: Main,
-      children: [
-        {
-          path: '/main/questions',
-          name: 'MainQuestion',
-          component: MainQuestion,
-        },
-        {
-          path: '/main/newquestion',
-          name: 'NewQuestion',
-          component: NewQuestion,
-        },
-        {
-          path: '/main/questiondetails/:questionId',
-          name: 'QuestionDetails',
-          component: QuestionDetails,
-        },
-      ],
     },
   ],
 });

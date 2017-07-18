@@ -48,6 +48,18 @@ export default new Vuex.Store({
         });
       });
     },
+    deleteQuestion({ dispatch, commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axios.delete(`${window.serverUrl}/api/questions/${payload.id}`)
+        .then(() => {
+          dispatch('getQuestions');
+          resolve();
+        })
+        .catch((err) => {
+          reject(err);
+        });
+      });
+    },
     addAnswer({ dispatch, commit }, payload) {
       axios.post(`${window.serverUrl}/api/questions/${this.question.id}/answer`, payload)
       .then(() => {

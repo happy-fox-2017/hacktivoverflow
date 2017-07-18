@@ -20,7 +20,7 @@
               <input type="text" v-model="name" class="form-control" id="name">
             </div>
             <button type="button" class="btn btn-default btn-primary" @click="signUp" style="margin-right: 20px;">Sign Up</button>
-            <router-link to="/">Cancel</router-link>
+            <router-link to="/signin">Cancel</router-link>
           </form>
         </div>
       </div>
@@ -46,7 +46,7 @@ export default {
         name: this.name,
       })
       .then(() => {
-        this.$router.push({ path: '/' });
+        this.$router.push({ path: '/signin' });
       })
       .catch((err) => {
         console.log(err);

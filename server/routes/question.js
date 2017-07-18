@@ -7,5 +7,6 @@ router.get('/', questionController.findAll);
 router.get('/:questionId', questionController.findOne);
 router.post('/', questionController.create);
 router.post('/:questionId/answer', questionController.giveAnswer);
+router.delete('/:questionId', questionController.delete);
 
 module.exports = router;

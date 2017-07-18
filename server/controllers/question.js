@@ -65,6 +65,20 @@ exports.create = function createQuestion(req, res) {
   });
 };
 
+exports.delete = function deleteUser(req, res) {
+  const questionId = req.params.questionId;
+  models.Question.destroy(
+    {
+      where: { id: questionId },
+    })
+  .then((result) => {
+    res.json(result);
+  })
+  .catch((err) => {
+    res.status(500).send(err.message);
+  });
+};
+
 exports.giveAnswer = function createUser(req, res) {
   const answerData = req.body;
   models.User.findOne({

@@ -16,6 +16,9 @@
         <button class="btn btn-primary" type="button">
           Answer <span class="badge">{{ question.Answers.length }}</span>
         </button>
+        <button class="btn btn-danger" type="button" @click="removeQuestion(question)">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
       </div>
     </div>
   </div>
@@ -34,6 +37,12 @@ export default {
   methods: {
     showDetails(questionId) {
       this.$router.push({ path: `/main/questiondetails/${questionId}` });
+    },
+    removeQuestion(question) {
+      const deleteConfirmation = confirm(`Delete question ${question.title}?`);
+      if (deleteConfirmation) {
+        this.$store.dispatch('deleteQuestion', question);
+      }
     },
   },
   mounted() {

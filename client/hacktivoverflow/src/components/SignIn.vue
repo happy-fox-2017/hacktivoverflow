@@ -48,7 +48,7 @@ export default {
         console.log(token);
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('userId', userId);
-        this.$router.push({ path: '/main/questions' });
+        this.$router.push({ path: '/' });
       })
       .catch((err) => {
         console.log(err);

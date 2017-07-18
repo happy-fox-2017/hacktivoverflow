@@ -14,7 +14,7 @@
           Votes <span class="badge">4</span>
         </button>
         <button class="btn btn-primary" type="button">
-          Answer <span class="badge">4</span>
+          Answer <span class="badge">{{ question.Answers.length }}</span>
         </button>
       </div>
     </div>
@@ -22,33 +22,37 @@
 </template>
 
 <script>
+
+import { mapState } from 'vuex';
+
 export default {
   name: 'QuestionList',
   data() {
     return {
-      questions: [{
-        title: 'Hello',
-      }],
+      // questions: [{
+      //   title: 'Hello',
+      // }],
     };
   },
   methods: {
     showDetails(questionId) {
-      console.log('details..');
       this.$router.push({ path: `/main/questiondetails/${questionId}` });
     },
-    getQuestions() {
-      this.$http.get(`${window.serverUrl}/api/questions`)
-      .then((response) => {
-        this.questions = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    },
+    // getQuestions() {
+    //   this.$http.get(`${window.serverUrl}/api/questions`)
+    //   .then((response) => {
+    //     this.questions = response.data;
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    // },
   },
   mounted() {
-    this.getQuestions();
+    // this.getQuestions();
+    this.$store.dispatch('getQuestions');
   },
+  computed: mapState(['questions']),
 };
 </script>
 

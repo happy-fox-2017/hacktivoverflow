@@ -14,7 +14,19 @@ exports.findAll = function findAllQuestions(req, res) {
         },
       ],
     })
-  .then((result) => {
+  .then((queryResult) => {
+    const userId = req.tokenPayload.userId;
+
+
+    const result = queryResult.map((questionObj) => {
+      const question = questionObj.toJSON();
+      if (userId === question.User.id) {
+        question.canDelete = true;
+      } else {
+        question.canDelete = false;
+      }
+      return question
+    });
     res.json(result);
   })
   .catch((err) => {

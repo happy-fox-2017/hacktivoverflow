@@ -16,7 +16,7 @@
         <button class="btn btn-primary" type="button">
           Answer <span class="badge">{{ question.Answers.length }}</span>
         </button>
-        <button class="btn btn-danger" type="button" @click="removeQuestion(question)">
+        <button v-if="question.canDelete" class="btn btn-danger" type="button" @click="removeQuestion(question)">
           <span class="glyphicon glyphicon-remove"></span>
         </button>
       </div>

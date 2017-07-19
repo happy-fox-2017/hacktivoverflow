@@ -35,7 +35,7 @@
                 </div>
 
                 <button type="button" class="btn btn-default btn-primary" @click="postAnswer" style="margin-right: 20px;">Post Answer</button>
-                <router-link to="/main/questions">Cancel</router-link>
+                <router-link to="/questions">Cancel</router-link>
               </form>
             </div>
           </div>
@@ -64,7 +64,7 @@ export default {
         content: this.content,
         user: sessionStorage.getItem('userId'),
       });
-      this.$router.push({ path: '/main/questions' });
+      this.$router.push({ path: '/questions' });
     },
   },
   components: {

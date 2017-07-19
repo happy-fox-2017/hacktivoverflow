@@ -16,7 +16,7 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-              <li><router-link to="/main/newquestion">New Question!</router-link></li>
+              <li><router-link to="/newquestion">New Question!</router-link></li>
               <li>
                 <button type="button" class="btn" @click="logout" style="margin-top: 7px;">Logout</button>
               </li>
@@ -46,8 +46,14 @@ export default {
   methods: {
     logout() {
       sessionStorage.removeItem('token');
+      sessionStorage.removeItem('name');
       this.$router.push({ path: '/signin' });
     },
+  },
+  mounted() {
+    if (!sessionStorage.getItem('token')) {
+      this.$router.push({ path: '/signin' });
+    }
   },
 };
 </script>

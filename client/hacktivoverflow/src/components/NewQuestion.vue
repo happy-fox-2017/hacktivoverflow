@@ -17,7 +17,7 @@
             </div>
 
             <button type="button" class="btn btn-default btn-primary" @click="create" style="margin-right: 20px;">Create</button>
-            <router-link to="/main/questions">Cancel</router-link>
+            <router-link to="/">Cancel</router-link>
           </form>
         </div>
       </div>
@@ -43,7 +43,7 @@ export default {
         user: sessionStorage.getItem('userId'),
       })
       .then(() => {
-        this.$router.push({ path: '/main/questions' });
+        this.$router.push({ path: '/' });
       });
     },
   },

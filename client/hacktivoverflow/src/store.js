@@ -19,7 +19,11 @@ export default new Vuex.Store({
   },
   actions: {
     getQuestions({ commit }) {
-      axios.get(`${window.serverUrl}/api/questions`)
+      axios.get(`${window.serverUrl}/api/questions`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+        },
+      })
       .then((response) => {
         commit('loadQuestions', response.data);
       })

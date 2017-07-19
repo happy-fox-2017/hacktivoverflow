@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     showDetails(questionId) {
-      this.$router.push({ path: `/main/questiondetails/${questionId}` });
+      this.$router.push({ path: `/questiondetails/${questionId}` });
     },
     removeQuestion(question) {
       const deleteConfirmation = confirm(`Delete question ${question.title}?`);

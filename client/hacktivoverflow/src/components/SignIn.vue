@@ -43,11 +43,8 @@ export default {
         password: this.password,
       })
       .then((result) => {
-        const token = result.data.token;
-        const userId = result.data.userId;
-        console.log(token);
-        sessionStorage.setItem('token', token);
-        sessionStorage.setItem('userId', userId);
+        sessionStorage.setItem('token', result.data.token);
+        sessionStorage.setItem('name', result.data.name);
         this.$router.push({ path: '/' });
       })
       .catch((err) => {

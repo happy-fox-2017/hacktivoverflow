@@ -91,10 +91,10 @@ export default {
         ]),
         checkQuestionLikeStatus (question) {
             if(localStorage.token){
-                let self = this,
-                likes = question.like;
-                statusTrue = 0,
-                statusFalse = 0;
+                let self = this;
+                let likes = question.like;
+                let statusTrue = 0,
+                    statusFalse = 0;
                 for(let i = 0; i < likes.length; i++){
                     if(localStorage._id === likes[i]){
                         statusTrue = 1;
@@ -113,9 +113,9 @@ export default {
         },
         checkAnswerLikeStatus (answerId, likes) {
             if(localStorage.token){
-                let self = this,
-                statusTrue = 0,
-                statusFalse = 0;
+                let self = this;
+                let statusTrue = 0,
+                    statusFalse = 0;
                 for(let i = 0; i < likes.length; i++){
                     if(localStorage._id === likes[i]){
                         statusTrue = 1;

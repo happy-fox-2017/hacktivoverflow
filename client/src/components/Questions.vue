@@ -15,7 +15,7 @@
             <div class="card" style="width: 100%" v-for="question in questions">
                 <div class="content">
                     <div class="ui right floated compact icon button" style="background-color: white;" @click="deleteOwnQuestion(question)"><i class="trash icon"></i></div>
-                    <div class="header">{{ question.title }}</div>
+                    <div class="header" @click="goToAnswerComponent(question._id)">{{ question.title }}</div>
                 </div>
                 <div class="content">
                     <div class="description">
@@ -27,8 +27,8 @@
                         <i class="heart outline like icon"></i>
                         {{ question.like.length }} likes
                     </span>
-                    <i class="comment icon" @click="goToAnswerComponent(question._id)"></i>
-                    {{ question.answers.length }} comments
+                    <span @click="goToAnswerComponent(question._id)"><i class="comment icon"></i>
+                    {{ question.answers.length }} comments</span>
                 </div>
             </div>
         </div>

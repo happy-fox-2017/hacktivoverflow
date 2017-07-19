@@ -61,14 +61,13 @@ exports.signIn = function signIn(req, res) {
       bcrypt.compare(password, user.password, (err, bcryptResult) => {
         if (bcryptResult) {
           const token = jwt.sign({
-            email: user.email,
-            role: user.role,
-          }, TOKEN_PASSWORD);
-          res.send({
-            email: user.email,
             name: user.name,
             userId: user.id,
+          }, TOKEN_PASSWORD);
+
+          res.send({
             token,
+            name: user.name,
           });
         } else {
           sendLoginFailedMessage(req, res);

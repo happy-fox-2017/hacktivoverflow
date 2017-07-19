@@ -40,7 +40,6 @@ export default {
       this.$store.dispatch('createQuestion', {
         title: this.title,
         content: this.content,
-        user: sessionStorage.getItem('userId'),
       })
       .then(() => {
         this.$router.push({ path: '/' });

@@ -43,7 +43,11 @@ export default new Vuex.Store({
     },
     createQuestion({ dispatch, commit }, payload) {
       return new Promise((resolve, reject) => {
-        axios.post(`${window.serverUrl}/api/questions`, payload)
+        axios.post(`${window.serverUrl}/api/questions`, payload, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+          },
+        })
         .then(() => {
           resolve();
         })

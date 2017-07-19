@@ -8,6 +8,7 @@ const isAuthenticated = function(req, res, next) {
 
   jwt.verify(token, TOKEN_PASSWORD, function(err, decoded) {
     if (decoded) {
+      req.tokenPayload = decoded;
       next();
     } else {
       res.send('Unauthorized', 403);

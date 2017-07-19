@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/', isAuthenticated, questionController.findAll);
 router.get('/:questionId', questionController.findOne);
-router.post('/', questionController.create);
+router.post('/', isAuthenticated, questionController.create);
 router.post('/:questionId/answer', questionController.giveAnswer);
 router.delete('/:questionId', questionController.delete);
 

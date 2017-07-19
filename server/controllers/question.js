@@ -46,9 +46,10 @@ exports.findOne = function findOneUser(req, res) {
 
 exports.create = function createQuestion(req, res) {
   const questionData = req.body;
+  const tokenPayload = req.tokenPayload;
   models.User.findOne({
     where: {
-      id: questionData.user,
+      id: tokenPayload.userId,
     },
   })
   .then((foundUser) => {

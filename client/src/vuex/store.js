@@ -15,8 +15,9 @@ const Store = new Vuex.Store({
         },
         usersData: [],
         isLogin: false,
-        qusetions: [],
-        answers: []
+        questions: [],
+        answers: [],
+        oneQuestion: {}
     },
     getters: {
         getUserData (state) {
@@ -33,6 +34,9 @@ const Store = new Vuex.Store({
         },
         getAnswersData (state) {
             return state.answers;
+        },
+        getOneQuestionData (state) {
+            return state.oneQuestion;
         }
     },
     mutations: {
@@ -43,8 +47,6 @@ const Store = new Vuex.Store({
             state.user.token = localStorage.token
 
             state.isLogin = true
-
-            console.log('status user saat ini---', state.user);
         },
         clearSigninUserStatus (state) {
             state.user = {
@@ -56,32 +58,34 @@ const Store = new Vuex.Store({
             }
 
             state.isLogin = false
-            console.log('user sudah di hapus', state.user);
         },
         setUsersData (state, data) {
             state.usersData.push(data);
-            console.log('ini data usersData', state.userData);
         },
         setQuestionsData (state, questions) {
-            state.questions.push(questions);
-            console.log('ini data questions yang masuk', state.questions);
+            state.questions = questions;
         },
         setAnswersData (state, answers) {
-            state.answers.push(answers);
-            console.log('ini data answers yang masuk', state.answers);
+            state.answers = answers;
+        },
+        setPushQuestionsData (state, question) {
+            state.questions.push(question);
+        },
+        setOneQuestionData (state, question) {
+            state.oneQuestion = question;
         }
     },
     actions: {
         userSignupMethod ({dispatch, commit}, userSignup) {
             axios.post('http://localhost:3000/api/user/signup/', {
-                fullname: userSignup.name,
+                fullname: userSignup.fullname,
                 username: userSignup.username,
                 password: userSignup.password,
                 email: userSignup.email,
                 address: userSignup.address
             })
             .then((response)=>{
-                alert(response.data.message + 'Silahkan Login menggunakan username anda!');
+                alert('Terima kasih, ' + response.data.data.fullname + ', Silahkan Login menggunakan username anda!');
                 console.log(response.data);
             })
             .catch((err)=>{
@@ -98,12 +102,14 @@ const Store = new Vuex.Store({
                 console.log(response.data);
 
                 //set local storage
-                localStorage.setItem('token', response.data.token);
-                localStorage.setItem('_id', response.data.id);
-                localStorage.setItem('fullname', response.data.fullname);
-                localStorage.setItem('email', response.data.email);
+                if(response.data.message !== 'Username yang anda masukkan belum terdaftar'){
+                    localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('_id', response.data.id);
+                    localStorage.setItem('fullname', response.data.fullname);
+                    localStorage.setItem('email', response.data.email);
 
-                commit('setSigninInfo')
+                    commit('setSigninInfo')
+                }
             })
         },
         userSignoutMethod ({commit}) {
@@ -135,18 +141,242 @@ const Store = new Vuex.Store({
         getAllQuestionsMethod ({ commit }) {
             axios.get('http://localhost:3000/api/question/')
             .then((response)=>{
-                console.log('ini adalah data question----', response.data);
-                let questions = response.data.data;
-                let answers = response.data.data.answers;
+                let questions = response.data;
                 commit('setQuestionsData', questions);
-                commit('setAnswersData', answers);
             })
             .catch((err)=>{
                 console.log(err);
                 alert('Kesalahan di server database');
+            })
+        },
+        createNewQuestionsMethod ({commit}, newQuestions) {
+            axios.post('http://localhost:3000/api/question/', {
+                title: newQuestions.title,
+                question: newQuestions.question,
+                author: localStorage._id
+            }, {
+                headers: { token: localStorage.token }
+            })
+            .then((response)=>{
+                alert('Berhasil menambah question baru');
+                console.log('ini data question baru--', response.data);
+                commit('setPushQuestionsData', response.data);
+            })
+            .catch((err)=>{
+                alert('Tidak dapat melanjutkan Anda harus login terlebih dahulu!');
+                console.log(err)
+            })
+        },
+        getOneQuestionWithAnswerMethod ({commit}, id) {
+            axios.get('http://localhost:3000/api/question/'+id)
+            .then((response)=>{
+                commit('setOneQuestionData', response.data)
+                commit('setAnswersData', response.data.answers);
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+        },
+        deleteQuestionMethod ({commit}, id) {
+            axios.delete('http://localhost:3000/api/question/'+ id, {
+                headers: { token: localStorage.token }
+            })
+            .then((response)=>{
+                console.log('ini response------', response);
+                console.log('ini id---------------', id);
+                alert('Pertanyaan anda tentang : '+response.data.title+', Berhasil di hapus')
+                //get all question
+                axios.get('http://localhost:3000/api/question/')
+                .then((response)=>{
+                    let questions = response.data;
+                    commit('setQuestionsData', questions);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                    alert('Kesalahan di server database');
+                })
+            })
+            .catch((err)=>{
+                alert('question gagal untuk dihapus!')
+                console.log(err)
+            })
+        },
+        createNewAnswerMethod ({commit}, newAnswer) {
+            var self = this;
+            axios.post('http://localhost:3000/api/answer/', {
+                content: newAnswer.content,
+                author: newAnswer.author
+            }, {
+                headers: { token: localStorage.token }
+            })
+            .then((response)=>{
+                console.log('ini jawaban baru--', response.data);
+                let newAnswerPush = {
+                    questionId: newAnswer.questionId,
+                    answerId: response.data._id
+                }
+                console.log('ini isi newAnswerPush------------------', newAnswerPush)
+                axios.put('http://localhost:3000/api/question/answer/'+ newAnswerPush.questionId, {
+                        answerId: newAnswerPush.answerId
+                    }, {
+                        headers : { token: localStorage.token }
+                    })
+                    .then((response)=>{
+                        alert('Berhasil memasukkan jawaban baru');
+                        console.log('ini question dengan answer baru--', response.data);
+                        axios.get('http://localhost:3000/api/question/'+ newAnswerPush.questionId)
+                            .then((response)=>{
+                                commit('setOneQuestionData', response.data)
+                                commit('setAnswersData', response.data.answers);
+                            })
+                            .catch((err)=>{
+                                console.log(err)
+                            })
+                    })
+                    .catch((err)=>{
+                        alert('Kesalahan, tidak dapat memasukkan jawaban baru')
+                        console.log(err)
+                    })
+            })
+            .catch((err)=>{
+                alert('Anda harus login terlebih dahulu untuk answer');
+                console.log(err);
+            })
+        },
+        deleteAnswerMethod ({commit}, answer) {
+            axios.delete('http://localhost:3000/api/answer/'+ answer.answerId, {
+                headers: { token: localStorage.token }
+            })
+            .then((response)=>{
+                alert('Jawaban anda berhasil dihapus')
+                //get one question
+                axios.get('http://localhost:3000/api/question/'+answer.questionId)
+                .then((response)=>{
+                    commit('setOneQuestionData', response.data)
+                    commit('setAnswersData', response.data.answers);
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+        },
+        addLikeOnQuestionMethod ({commit}, questionId) {
+            if(!localStorage.token){
+                alert('Anda harus login ini like')
+            } else {
+                axios.put('http://localhost:3000/api/question/like/'+questionId, {
+                    like: localStorage._id
+                }, {
+                    headers: { token: localStorage.token }
+                })
+                .then((response)=>{
+                    //get all
+                    axios.get('http://localhost:3000/api/question/')
+                    .then((response)=>{
+                        let questions = response.data;
+                        commit('setQuestionsData', questions);
+                    })
+                    .catch((err)=>{
+                        console.log(err);
+                    })
+                    //get one
+                    axios.get('http://localhost:3000/api/question/'+questionId)
+                    .then((response)=>{
+                        commit('setOneQuestionData', response.data)
+                        commit('setAnswersData', response.data.answers);
+                    })
+                    .catch((err)=>{
+                        console.log(err)
+                    })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            }
+        },
+        removeLikeOnQuestionMethod ({commit}, questionId) {
+            if(!localStorage.token){
+                alert('Anda harus login untuk unlike!')
+            } else {
+                axios.put('http://localhost:3000/api/question/unlike/'+questionId, {
+                    like: localStorage._id
+                }, {
+                    headers: { token: localStorage.token }
+                })
+                .then((response)=>{
+                    //get all
+                    axios.get('http://localhost:3000/api/question/')
+                    .then((response)=>{
+                        let questions = response.data;
+                        commit('setQuestionsData', questions);
+                    })
+                    .catch((err)=>{
+                        console.log(err);
+                        alert('Kesalahan di server database');
+                    })
+                    //get one
+                    axios.get('http://localhost:3000/api/question/'+questionId)
+                    .then((response)=>{
+                        commit('setOneQuestionData', response.data)
+                        commit('setAnswersData', response.data.answers);
+                    })
+                    .catch((err)=>{
+                        console.log(err)
+                    })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            }
+        },
+        addAnswerLikeMethod ({ commit }, ids) {
+            axios.put('http://localhost:3000/api/answer/like/'+ids.answerId, {
+                like: localStorage._id
+            }, {
+                headers: { token: localStorage.token }
+            })
+            .then((response)=>{
+                axios.get('http://localhost:3000/api/question/'+ids.questionId)
+                .then((response)=>{
+                    commit('setOneQuestionData', response.data)
+                    commit('setAnswersData', response.data.answers);
+                })
+                .catch((err)=>{
+                    alert('Sesi anda berakhir silahkan sign out dahulu')
+                    console.log(err)
+                })
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        },
+        removeAnswerLikeMethod ({ commit }, ids) {
+            axios.put('http://localhost:3000/api/answer/unlike/'+ids.answerId, {
+                like: localStorage._id
+            }, {
+                headers: { token: localStorage.token }
+            })
+            .then(response => {
+               axios.get('http://localhost:3000/api/question/'+ids.questionId)
+                .then((response)=>{
+                    commit('setOneQuestionData', response.data)
+                    commit('setAnswersData', response.data.answers);
+                })
+                .catch((err)=>{
+                    alert('sesi anda habis silahkan sign out dahulu')
+                    console.log(err)
+                })
+            })
+            .catch(err => {
+                console.log(err);
             })
         }
     }
 })
 
 export default Store;
+
+//const router = import('@/components')

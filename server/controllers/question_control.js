@@ -13,10 +13,7 @@ models.getAllItems = function(req, res){
             })
         } else {
             res.status(200)
-            .send({
-                msg: 'Berhasil mendapatkan data questions',
-                data: result
-            })
+            .send(result)
         }
     })
 }
@@ -34,10 +31,7 @@ models.getOneItem = function(req, res){
             })
         } else {
             res.status(200)
-            .send({
-                msg: 'Berhasil mendapatkan data questions',
-                data: result
-            })
+            .send(result)
         }
     })
 }
@@ -65,10 +59,7 @@ models.createQuestion = function(req, res){
             })
         } else {
             res.status(200)
-            .send({
-                msg: 'Berhasil memasukkan data questions',
-                data: result
-            })
+            .send(result)
         }
     })
 }
@@ -83,10 +74,7 @@ models.deleteItem = function(req, res){
                 error: err
             })
         } else {
-            res.send({
-                message: 'Berhasil menghapus question',
-                data: result
-            })
+            res.send(result)
         }
     })
 }
@@ -108,17 +96,14 @@ models.addAnswers = function(req, res){
                 error: err
             })
         } else {
-            res.send({
-                message: 'Berhasil menambahkan unswer',
-                data: result
-            })
+            res.send(result)
         }
     })
 }
 
 models.addLikes = function(req, res){
     let id = req.params.id,
-        like = req.body.likeId;
+        like = req.body.like;
     Question.findByIdAndUpdate(id, {
         $push: { like: like }
     }, {
@@ -133,10 +118,7 @@ models.addLikes = function(req, res){
                 error: err
             })
         } else {
-            res.send({
-                message: 'Berhasil menambahkan like',
-                data: result
-            })
+            res.send(result)
         }
     })
 }
@@ -144,7 +126,7 @@ models.addLikes = function(req, res){
 models.removeLikes = function(req, res){
     let id = req.params.id,
         like = req.body.like;
-    Answer.findByIdAndUpdate(id, {
+    Question.findByIdAndUpdate(id, {
         $pull: { like: like }
     }, {
         safe: true,
@@ -157,10 +139,7 @@ models.removeLikes = function(req, res){
                 error: err
             })
         } else {
-            res.send({
-                message: 'Berhasil menghapus like',
-                data: result
-            })
+            res.send(result)
         }
     })
 }

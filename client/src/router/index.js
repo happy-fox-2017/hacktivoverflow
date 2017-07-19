@@ -31,7 +31,7 @@ export default new Router({
           component: Users
         },
         {
-          path: 'answer/',
+          path: 'answer/:id',
           name: 'answer',
           component: Answer
         }

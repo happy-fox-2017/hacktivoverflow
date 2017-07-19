@@ -13,10 +13,7 @@ models.getAllItems = function(req, res){
             })
         } else {
             res.status(200)
-            .send({
-                msg: 'Berhasil mendapatkan data Answers',
-                data: result
-            })
+            .send(result)
         }
     })
 }
@@ -34,10 +31,7 @@ models.getOneItem = function(req, res){
             })
         } else {
             res.status(200)
-            .send({
-                msg: 'Berhasil mendapatkan data Answers',
-                data: result
-            })
+            .send(result)
         }
     })
 }
@@ -59,10 +53,7 @@ models.createAnswer = function(req, res){
             })
         } else {
             res.status(200)
-            .send({
-                msg: 'Berhasil memasukkan data Answers',
-                data: result
-            })
+            .send(result)
         }
     })
 }
@@ -77,17 +68,14 @@ models.deleteItem = function(req, res){
                 error: err
             })
         } else {
-            res.send({
-                message: 'Berhasil menghapus Answer',
-                data: result
-            })
+            res.send(result)
         }
     })
 }
 
 models.addLikes = function(req, res){
     let id = req.params.id,
-        like = req.body.likeId;
+        like = req.body.like;
     Answer.findByIdAndUpdate(id, {
         $push: { like: like }
     }, {
@@ -102,10 +90,7 @@ models.addLikes = function(req, res){
                 error: err
             })
         } else {
-            res.send({
-                message: 'Berhasil menambahkan like',
-                data: result
-            })
+            res.send(result)
         }
     })
 }
@@ -126,10 +111,7 @@ models.removeLikes = function(req, res){
                 error: err
             })
         } else {
-            res.send({
-                message: 'Berhasil menghapus like',
-                data: result
-            })
+            res.send(result)
         }
     })
 }

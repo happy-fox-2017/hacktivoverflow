@@ -1,19 +1,44 @@
 <template>
   <div class="row">
-    <div class="col-md-9" style="padding-left: 50px;">
+    <div class="col-md-8 col-md-offset-2" style="padding-left: 50px;">
       <div class="row" style="margin-bottom: 30px;">
         <div class="col-md-12">
-          <h2>{{ question.title }}</h2>
-          <h4>{{ question.content }}</h4>
-          <h5><hr/></h5>
-          <h5>Answers: </h5>
-          <h5><hr/></h5>
 
-          <ul class="list-group">
-            <li class="list-group-item" v-for="answer in question.Answers">
-              <h4>{{ answer.content }}</h4>
-            </li>
-          </ul>
+          <div class="media">
+            <div class="media-left">
+              <button type="button" class="btn" aria-label="Left Align" @click="upVote">
+                <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+              </button>
+
+              <h2 style="margin: 0; margin-left: 10px; color: gray;">{{ question.Votes.length }}</h2>
+              <button type="button" class="btn" aria-label="Left Align" @click="downVote">
+                <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">{{ question.title }}</h4>
+              <div style="height: 90px;">
+
+                {{ question.content }}
+              </div>
+
+              <hr />
+              <div class="media" v-for="answer in question.Answers">
+                <div class="media-left">
+                  <a href="#">
+                    <img class="media-object" />
+                  </a>
+                </div>
+                <div class="media-body">
+                  <h4>{{ answer.content }}</h4>
+                  <h6>Answered by: {{ answer.User.name }}</h6>
+                </div>
+              </div>
+
+
+            </div>
+
+          </div>
         </div>
       </div>
 
@@ -26,16 +51,12 @@
             <div class="panel-body">
               <form>
                 <div class="form-group">
-                  <label for="email">Title</label>
-                  <input type="text" v-model="title" class="form-control" id="email">
-                </div>
-                <div class="form-group">
                   <label for="pwd">Content:</label>
                   <textarea class="form-control" rows="5" v-model="content" ></textarea>
                 </div>
 
                 <button type="button" class="btn btn-default btn-primary" @click="postAnswer" style="margin-right: 20px;">Post Answer</button>
-                <router-link to="/questions">Cancel</router-link>
+                <router-link to="/">Cancel</router-link>
               </form>
             </div>
           </div>
@@ -59,12 +80,22 @@ export default {
   },
   methods: {
     postAnswer() {
-      this.$store.dispatch('addAnswer', {
+      this.$store.dispatch('giveAnswer', {
         question: this.question.id,
         content: this.content,
-        user: sessionStorage.getItem('userId'),
       });
-      this.$router.push({ path: '/questions' });
+    },
+    upVote() {
+      this.$store.dispatch('giveVote', {
+        question: this.question.id,
+        score: 1,
+      });
+    },
+    downVote() {
+      this.$store.dispatch('giveVote', {
+        question: this.question.id,
+        score: -1,
+      });
     },
   },
   components: {

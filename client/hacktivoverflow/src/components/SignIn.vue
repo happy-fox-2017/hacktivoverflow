@@ -49,6 +49,7 @@ export default {
       })
       .catch((err) => {
         console.log(err);
+        alert(`Login error check username or password. Error: ${err.message}`);
       });
     },
   },

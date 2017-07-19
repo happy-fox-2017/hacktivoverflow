@@ -32,7 +32,11 @@ export default new Vuex.Store({
       });
     },
     getQuestion({ commit }, payload) {
-      axios.get(`${window.serverUrl}/api/questions/${payload.questionId}`)
+      axios.get(`${window.serverUrl}/api/questions/${payload.questionId}`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+        },
+      })
       .then((response) => {
         commit('loadQuestion', response.data);
       })
@@ -58,7 +62,11 @@ export default new Vuex.Store({
     },
     deleteQuestion({ dispatch, commit }, payload) {
       return new Promise((resolve, reject) => {
-        axios.delete(`${window.serverUrl}/api/questions/${payload.id}`)
+        axios.delete(`${window.serverUrl}/api/questions/${payload.id}`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+          },
+        })
         .then(() => {
           dispatch('getQuestions');
           resolve();
@@ -68,11 +76,27 @@ export default new Vuex.Store({
         });
       });
     },
-    addAnswer({ dispatch, commit }, payload) {
-      axios.post(`${window.serverUrl}/api/questions/${this.question.id}/answer`, payload)
+    giveAnswer({ dispatch, commit }, payload) {
+      axios.post(`${window.serverUrl}/api/questions/${payload.question}/answer`, { content: payload.content }, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+        },
+      })
       .then(() => {
-        dispatch('getQuestions');
-        this.$router.push({ path: '/main/questions' });
+        dispatch('getQuestion', { questionId: payload.question });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    },
+    giveVote({ dispatch, commit }, payload) {
+      axios.post(`${window.serverUrl}/api/questions/${payload.question}/vote`, { score: payload.score }, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+        },
+      })
+      .then(() => {
+        dispatch('getQuestion', { questionId: payload.question });
       })
       .catch((err) => {
         console.log(err);

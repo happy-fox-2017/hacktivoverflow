@@ -10,10 +10,10 @@
           Asked by : {{ question.User ? question.User.name : '' }}
         </p>
 
-        <button class="btn btn-info" type="button">
-          Votes <span class="badge">4</span>
+        <button class="btn btn-info" type="button" @click="showDetails(question.id)">
+          Votes <span class="badge">{{ question.Votes.length }}</span>
         </button>
-        <button class="btn btn-primary" type="button">
+        <button class="btn btn-primary" type="button" @click="showDetails(question.id)">
           Answer <span class="badge">{{ question.Answers.length }}</span>
         </button>
         <button v-if="question.canDelete" class="btn btn-danger" type="button" @click="removeQuestion(question)">

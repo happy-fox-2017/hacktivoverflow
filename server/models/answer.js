@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
   Answer.associate = function (models) {
     Answer.belongsTo(models.User);
     Answer.belongsTo(models.Question);
+    Answer.hasMany(models.VoteAnswer);
   };
 
   return Answer;

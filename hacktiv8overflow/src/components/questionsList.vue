@@ -98,7 +98,7 @@ export default {
   td a {
     color: #d10808;
     font-weight: 700;
-    font-size: 25px;
+    font-size: 15px;
   }
 
   nav {

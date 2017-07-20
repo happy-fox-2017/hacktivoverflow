@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/overflow', {
+mongoose.connect('mongodb://admin:admin@ds163232.mlab.com:63232/sidik-overflow', {
   useMongoClient: true
 })
 

@@ -39,7 +39,7 @@
       <hr>
       <div class="columns" v-for="answer in answersList">
         <div class="column">
-          <p class="title is-3"><b>{{answer.title}}</b></p>
+          <p class="title is-5"><b>{{answer.title}}</b></p>
           <p>{{answer.desc}}</p>
           <br>
           <p>by: <b>{{answer.username}}</b>, {{(new Date(answer.createdAt)).toString()}}</p>
@@ -54,13 +54,13 @@
         </div>
         <div class="column is-1">
           <div class="columns">
-            <span><i @click="upVoteGoGo(answer._id)" class="fa fa-caret-up title is-3" style="color: #d10808; margin-right: 3px"></i>{{answer.upVote.length}}</span>
+            <span><i @click="upVoteGoGo(answer._id)" class="fa fa-caret-up title is-4" style="color: #d10808; margin-right: 3px"></i>{{answer.upVote.length}}</span>
           </div>
           <div class="columns">
-            <p class="title is-3">{{answer.upVote.length - answer.downVote.length}}</p>
+            <p class="title is-4">{{answer.upVote.length - answer.downVote.length}}</p>
           </div>
           <div class="columns">
-            <span><i @click="downVoteGoGo(answer._id)" class="fa fa-caret-down title is-3" style="margin-right: 3px"></i>{{answer.downVote.length}}</span>
+            <span><i @click="downVoteGoGo(answer._id)" class="fa fa-caret-down title is-4" style="margin-right: 3px"></i>{{answer.downVote.length}}</span>
           </div>
         </div>
       </div>

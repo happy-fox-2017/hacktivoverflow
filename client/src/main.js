@@ -5,8 +5,9 @@ import Vuex from 'vuex'
 import App from './App'
 import router from './router'
 import store from './vuex/store.js'
+import 'animate.css/animate.min.css'
 
-require('semantic-ui-css/semantic.css')
+import 'semantic-ui-css/semantic.css'
 require('semantic-ui-css/semantic.js')
 
 Vue.config.productionTip = false

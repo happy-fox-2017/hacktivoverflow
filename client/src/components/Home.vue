@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-    <router-view></router-view>
+    <transition name="custom-classes-transition" enter-active-class="animated slideInLeft" leave-active-class="animated slideOutRight"><router-view v-if="show"></router-view></transition>
     <div class="ui fluid container" style="padding-top: 40px;">
           <div class="ui inverted vertical footer segment" style="height: 230px; padding-top: 50px;">
               <div class="ui container">
@@ -69,7 +69,8 @@ export default {
   name: 'home',
   data () {
     return {
-      page: 'Home'
+      page: 'Home',
+      show: true
     }
   },
   methods: {

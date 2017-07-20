@@ -1,13 +1,17 @@
 const db = require('../models');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const jwt = require('jsonwebtoken');
 
 let User_findbyidorcreate = function(req,res){
   let data = req.body;
+  var hash = bcrypt.hashSync(data.password, saltRounds);
   db.User
   .findOrCreate({where: {id:data.id}, defaults: {
     name: data.name,
     gender : data.gender,
     email  : data.email,
-    password: data.password,
+    password: hash,
     dob    : data.dob
   }})
   .then(data =>{
@@ -33,26 +37,44 @@ let User_login = function(req,res){
   let data = req.body
   db.User.findAll({
     where: {
-      email: data.email, 
-      password: data.password
+      email: data.email
     }
   })
   .then((result)=>{
-    res.status(200).send(result)  
+    console.log(result)
+    if (result != null) {
+      let resultpassword = bcrypt.compareSync(data.password, result[0].password)
+      if (resultpassword) {
+        jwt.sign({
+          id: result[0].id,
+          name: result[0].name,
+          gender: result[0].gender,
+          email: result[0].email
+        }, 'secret', function(err,token) {
+          res.status(200).send(token)
+        })
+      } else {
+        res.status(502).send(`Password False please write your password well`)
+      }
+    } else {
+      res.status(501).send(`Email False please write your email well`)
+    }
+    
   })
   .catch(err => {
-    res.status(501).send(`Something wrong with your Get User : ${err}`);
+    res.status(501).send(`Email False please write your email well : ${err}`);
   })
 }
 
 let User_put = function (req,res) {
   let id = req.params.id;
   let data = req.body;
+  var hash = bcrypt.hashSync(data.password, salt);
   db.User.update({
     name: data.name,
     gender : data.gender,
     email : data.email,
-    password: data.password,
+    password: hash,
     dob : data.dob
   }, {
     where:{id:id}
@@ -92,7 +114,6 @@ let User_getById = function(req,res) {
 }
 
 module.exports = {
-  // User_post,
   User_get,
   User_put,
   User_delete,

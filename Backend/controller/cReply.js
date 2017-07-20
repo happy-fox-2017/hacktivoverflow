@@ -1,64 +1,31 @@
 const db = require('../models');
 
-let reply_get = function (req,res) {
+let Reply_get = function (req,res) {
   db.Reply.findAll()
-  .then(result =>{
+  .then(result => {
     res.status(200).send(result)
   })
   .catch(err => {
-    res.status(501).send(`Something wrong with your Get Reply : ${err}`)
+    res.status(501).send('Something Wrong with your reply',err)
   })
 }
 
-let reply_post = function (req,res) {
-  let data = req.body;
+let Reply_post = function (req,res) {
+  let data = req.body
   db.Reply.create({
-    comment: data.comment,
-    tags: data.tags,
+    comment : data.comment,
+    tags : data.tags,
     id_thread: data.id_thread,
-    id_user: data.id_user
+    id_user : data.id_user
+  }).then((result)=>{
+    res.status(200).send(result);
   })
-  .then(data =>{
-    res.status(200).send(data);
-  }) .catch(err => {
+  .catch(err => {
     res.status(501).send(`Something wrong with your Post Reply : ${err}`);
   })
 }
 
-let reply_delete = function (req,res) {
-  let id = req.params.id;
-  db.Reply.destroy({
-    where : {id:id}
-  }) .then(() =>{
-    res.status(200).send(`Delete 1 Reply Done`);
-  })
-  .catch(err => {
-    res.status(501).send(`Something wrong with your Delete Reply : ${err}`);
-  })
-}
-
-let reply_put = function (req,res) {
-  let id = req.params.id;
-  let data = req.body;
-  db.Reply.update({
-    comment: data.comment,
-    tags: data.tags,
-    id_thread: data.id_thread,
-    id_user: data.id_user
-  }, {
-    where: {id:id}
-  })
-  .then(result =>{
-    res.status(200).send(result)
-  })
-  .catch(err => {
-    res.status(501).send(`Something wrong with your Update Reply : ${err}`);
-  })
-}
-
 module.exports = {
-  reply_get,
-  reply_post,
-  reply_delete,
-  reply_put
+  Reply_get,
+  Reply_post
 };

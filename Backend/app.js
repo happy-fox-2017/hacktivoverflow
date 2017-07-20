@@ -9,6 +9,7 @@ var index = require('./routes/index');
 var user = require('./routes/user');
 var reply = require('./routes/reply');
 var thread = require('./routes/thread');
+var thread_vote = require('./routes/thread_vote');
 var cors = require('cors')
 
 var app = express();
@@ -30,6 +31,7 @@ app.use('/', index);
 app.use('/user', user);
 app.use('/thread', thread);
 app.use('/reply', reply);
+app.use('/thread_vote', thread_vote);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

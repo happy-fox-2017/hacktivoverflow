@@ -13,9 +13,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Login</a></li>
+            <li><a @click="logout">Logout</a></li>
           </ul>
-          <p class="navbar-text navbar-right">Welcome Guest</p>
+          <p class="navbar-text navbar-right">Welcome {{name}}</p>
         </div>
         <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -65,17 +65,41 @@ export default {
   name: 'Mainmenu',
   data () {
     return {
-      thread: null
+      thread: null,
+      email: null,
+      name: null
     }
   },
+  props: ['islogin'],
   created () {
     var self = this
     this.$http.get('http://localhost:3000/thread')
     .then((response) => {
       self.thread = response.data
+      self.checkLogin()
+      self.verifyToken()
     }).catch(err => {
       console.log(err)
     })
+  },
+  methods: {
+    checkLogin () {
+      this.$emit('checkLogin')
+    },
+    logout () {
+      localStorage.clear()
+      this.$router.push('/')
+    },
+    verifyToken () {
+      let token = localStorage.getItem('token')
+      this.$http.get(`http://localhost:3000/verify/${token}`)
+      .then((response) => {
+        this.name = response.data.name
+        this.email = response.data.email
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   }
 }
 </script>

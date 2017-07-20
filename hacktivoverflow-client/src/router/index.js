@@ -11,17 +11,20 @@ export default new Router({
     {
       path: '/',
       name: 'Login',
-      component: Login
+      component: Login,
+      props: true
     },
     {
       path: '/dashboard',
       name: 'Mainmenu',
-      component: Mainmenu
+      component: Mainmenu,
+      props: true
     },
     {
       path: '/register',
       name: 'Register',
-      component: Register
+      component: Register,
+      props: true
     }
   ]
 })

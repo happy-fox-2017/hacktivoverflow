@@ -46,6 +46,9 @@ export default {
         if (response.data.length === 0) {
           this.msg = 'please Try Again, Username or password wrong'
         } else {
+          let token = response.data
+          localStorage.setItem('token', token)
+          this.$emit('islogin')
           this.$router.push('/dashboard')
         }
       })

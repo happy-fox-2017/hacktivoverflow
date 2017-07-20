@@ -11,6 +11,7 @@
 <script>
 export default {
   name: 'hello',
+  props: ['islogin'],
   data () {
     return {
       msg: 'Welcome to Blog Hacktiv8'

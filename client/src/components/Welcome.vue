@@ -24,7 +24,7 @@ export default {
   name: 'welcome',
   data () {
     return {
-      msg: 'Welcom Full Stack Overflow'
+      msg: 'Welcome Full Stack Overflow'
     }
   }
 }

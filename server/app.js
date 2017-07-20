@@ -12,7 +12,7 @@ var vote = require('./routes/vote');
 let db_config = {
   development: 'mongodb://ambodalle:alekoe123456@ds161262.mlab.com:61262/hacktiv8',
   test: 'mongodb://localhost/stack-test',
-   // production: 'mongodb://ambodalle:alekoe123456@ds161262.mlab.com:61262/hacktiv8'
+   production: 'mongodb://ambodalle:alekoe123456@ds161262.mlab.com:61262/hacktiv8'
 }
 
 let app_env = app.settings.env;
